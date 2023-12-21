@@ -1,0 +1,55 @@
+/*
+Program 5
+Fowler Trotter
+Pledged
+11/7/23
+*/
+#include <iostream>
+#include <stack>
+#include <string>
+#include <fstream>
+#include <cctype>
+using namespace std;
+
+bool isPalindrome(const string& str) {
+    string normalizedWord = "";
+    stack<char> charStack;
+
+    for (char c : str) {
+        if (isalpha(c)) {
+            normalizedWord += toupper(c);
+            charStack.push(toupper(c));
+        }
+    }
+
+    string reversedWord = "";
+    while (!charStack.empty()) {
+        reversedWord += charStack.top();
+        charStack.pop();
+    }
+
+    return normalizedWord == reversedWord;
+}
+
+int main() {
+    ifstream in;
+    string word;
+
+    in.open("pal.txt");
+
+    while (in >> word) {
+        if (!word.empty()) {
+            cout << "Word is " << word;
+
+            if (isPalindrome(word)) {
+                cout << " " << ";Palindrome: Yes" << endl;
+            } else {
+                cout << " " << ";Palindrome: No" << endl;
+            }
+        }
+    }
+
+    in.close();
+
+    return 0;
+}
