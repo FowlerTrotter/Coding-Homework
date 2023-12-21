@@ -1,0 +1,40 @@
+/*
+   Homework 8
+   Name: Fowler Trotter
+   Class CSC
+   Date: 4 September 2023
+   Pledged
+*/
+
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+#include <iostream>
+
+int reverseDigits(int num, int reversedNum = 0) {
+    // Base case: num is 0, return the reversedNum
+    if (num == 0) {
+        return reversedNum;
+    }
+
+    // Recursive case: extract the last digit of num
+    int lastDigit = num % 10;
+
+    // Add the last digit to the reversedNum
+    reversedNum = reversedNum * 10 + lastDigit;
+
+    // Recursive call: remove the last digit from num
+    return reverseDigits(num / 10, reversedNum);
+}
+
+int main() {
+    int num;
+    std::cout << "Enter an integer: ";
+    std::cin >> num;
+
+    int reversedNum = reverseDigits(num);
+    std::cout << "The integer with digits reversed is: " << reversedNum << std::endl;
+
+    return 0;
+}
