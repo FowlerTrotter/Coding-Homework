@@ -1,0 +1,123 @@
+/*
+   Program #6
+   Name: Fowler Trotter
+   Date: 15 November 2023
+   Pledged
+*/
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+
+template <typename T>
+class Queue {
+private:
+    struct Node {
+        T data;
+        Node* next;
+
+        Node(const T& data) : data(data), next(nullptr) {}
+    };
+
+    Node* front;
+    Node* tail;
+
+public:
+    Queue() : front(nullptr), tail(nullptr) {}
+
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+
+    void enqueue(const T& data) {
+        Node* newNode = new Node(data);
+        if (isEmpty()) {
+            front = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    T dequeue() {
+        if (isEmpty()) {
+            throw runtime_error("Queue is empty");
+        }  //runtime_error in this case sort of treats dequeuing an empty queue as an exception
+
+        Node* temp = front;
+        T data = temp->data;
+
+        if (front == tail) {
+            front = nullptr;
+            tail = nullptr;
+        } else {
+            front = front->next;
+        }
+
+        delete temp;
+        return data;
+    }
+
+    bool isEmpty() const {
+        return front == nullptr;
+    }
+};
+
+int main()
+{
+    int i, x;
+    float y;
+    char z;
+    Queue<int> A;
+    Queue<float> B;
+    Queue<char> C;
+
+    ifstream in;
+    in.open("int.txt");
+    for (i = 0; i < 100; i++){
+        in >> x;
+        A.enqueue(x);
+    }
+    cout << A.dequeue() << endl;
+    for (i = 0; i < 12; i++)
+        A.enqueue(i);
+    cout << A.dequeue() << endl;
+    cout << A.dequeue() << endl;
+    cout << "Dequeueing: "<< A.dequeue() << endl;
+    while (!A.isEmpty())
+        cout  << A.dequeue() << "  ";
+    if (A.isEmpty())
+        cout << "Integer Queue Is Empty "  << endl;
+    in.close();
+
+    cout << endl << "Now for the floating point numbers...." << endl;
+
+    in.open("float.txt");
+    for (i = 0; i < 100; i++){
+        in >> y;
+        B.enqueue(y);
+    }
+    cout << "Here are the first ten:" << endl;
+    for (i = 0; i < 10; i++){
+        cout << B.dequeue() << endl;
+    }
+    in.close();
+
+    in.open("char.txt");
+    for (i = 0; i < 100; i++){
+        in >> z;
+        C.enqueue(z);
+    }
+    cout << "Here are the characters" << endl;
+    while (!C.isEmpty()){
+        cout << C.dequeue();
+    }
+
+    in.close();
+
+    return 0;
+}
